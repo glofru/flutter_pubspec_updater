@@ -1,0 +1,6 @@
+aiohttp
+argparse
+asyncio
+pyyaml
+beautifulsoup4
+tabulate
