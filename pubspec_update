@@ -4,12 +4,19 @@
 import aiohttp
 import argparse
 import asyncio
+import pkg_resources
 import yaml
+import webbrowser
 from bs4 import BeautifulSoup
 from tabulate import tabulate
 
+try:
+    VERSION = pkg_resources.require("Flutter_pubspec_updater")[0].version
+except:
+    VERSION = "Not Available"
 
 pub_base_url = "https://pub.dev/packages/{}"
+pub_changelog_url = pub_base_url + "/changelog"
 
 
 def update_file(path: str, new_packages):
@@ -55,6 +62,12 @@ async def update(package: str, current_version: str, session: aiohttp.ClientSess
             return package, current_version, newest_version
 
 
+def open_on_browser(rows: list):
+    webbrowser.open_new(pub_changelog_url.format(rows[0][0]))
+    for i in range(1, len(rows)):
+        webbrowser.open(pub_changelog_url.format(rows[i][0]))
+
+
 async def process(path: str):
     parsed_file = process_yaml(path)
     dependencies = parsed_file["dependencies"]
@@ -82,8 +95,12 @@ async def process(path: str):
         else:
             print(tabulate(rows, headers=["Package", "Current version", "New version"]))
             print()
-            do_update = input("Do you want me to update the pubspec.yaml for you? [y/N]: ")
 
+            open_browser = input("Do you want to open each updating package on the web browser? [Y/n]")
+            if open_browser.lower() != "n":
+                open_on_browser(rows)
+
+            do_update = input("Do you want me to update the pubspec.yaml for you? [y/N]: ")
             if do_update.lower() == "y":
                 return rows
     pass
@@ -98,7 +115,8 @@ def process_yaml(path: str):
 
 async def main():
     parser = argparse.ArgumentParser(description="Update all the packages in pubspec.yaml of a Flutter project.")
-    parser.add_argument("path", metavar="project/file path", type=str, help="The path of the Flutter project or pubspec.yaml file")
+    parser.add_argument("path", default=".", nargs="*", metavar="project/file path", type=str, help="The path of the Flutter project or pubspec.yaml file")
+    parser.add_argument("--version", "-v", action="version", version=VERSION)
 
     args = parser.parse_args()
     file_path = args.path
