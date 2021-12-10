@@ -12,9 +12,9 @@ Just run `INSTALL.sh`, this will add the command `pubspec_update` in your termin
 
 Run `pubspec_update` passing an empty argument or, alternatively, either the path of the Flutter project or the *pubspec.yaml* file. Example:
 
-- `pubspect_update`, this will take as path the current working directory.
-- `pubspect_update ~/my/flutter/project`
-- `pubspect_update ~/my/flutter/project/pubspec.yaml`
+- `pubspec_update`, this will take as path the current working directory.
+- `pubspec_update ~/my/flutter/project`
+- `pubspec_update ~/my/flutter/project/pubspec.yaml`
 
 The tool will print a table with all the packages that need an update. This table contains the package name, the current version in the *pubspec* and the newer version available on [pub.dev](https://pub.dev).
 
