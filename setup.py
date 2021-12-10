@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name="Flutter pubspec updater",
-    version="1.1",
+    version="1.2",
     author="Gianluca Lofrumento",
     author_email="gianluca.lofrumento@gmail.com",
     description="Update all the packages in pubspec.yaml of a Flutter project.",
